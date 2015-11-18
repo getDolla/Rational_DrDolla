@@ -1,8 +1,8 @@
 /*
-Team DrDolla - Yikai Wang, Dhruba Roy
+Team DrDolla - Yikai Wang, Richard Wang
 APCS1 Pd9
-HW32 -- Irrationality Stops Here 
-2015-11-17
+HW33 -- Do You Even Add, Bro?
+2015-11-18
  */
 
 public class Rational{
