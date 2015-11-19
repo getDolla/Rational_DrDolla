@@ -16,7 +16,8 @@ public class Rational{
     
     public Rational( int num, int dem ) { //custom
 	if (dem == 0) {
-	    this();
+	    numerator = 0;
+	    denominator = 1;
 	    System.out.println("Cannot divide by 0");
 	}
 	else {
