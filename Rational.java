@@ -26,112 +26,89 @@ public class Rational{
 	}
     }
 
-    public String toString() {
+    public String toString() { //gives fraction and decimal forms
 	String s1 = "Fraction : "+numerator +"/"+denominator;
 	String s2 = "Decimal : "+ (numerator * 1.0 / denominator);
 	return s1 +"\n"+ s2;
     }
 
-    public double floatValue() {
+    public double floatValue() { //returns "decimal" value
 	return numerator * 1.0 / denominator;
     }
 
-    public void multiply (Rational r) {
+    //methods for multiplying, dividing, adding, and subtracting
+    public void multiply (Rational r) { //multiplying fractions
 	numerator *= r.numerator;
 	denominator *= r.denominator;
     }
 
-    public void divide (Rational r) {
+    public void divide (Rational r) { //dividing fractions
+	if( r.numerator != 0 ) {
 	numerator *= r.denominator;
 	denominator *= r.numerator;
+	}
     }
 
-
-    public void add (Rational r) {
+    public void add (Rational r) { //adding fractions
 	numerator = numerator * r.denominator + r.numerator * denominator;
 	denominator = denominator * r.denominator;
     }
 
-    public void subtract (Rational r) {
+    public void subtract (Rational r) { //subtracting fractions
 	numerator = numerator * r.denominator - r.numerator * denominator;
 	denominator = denominator * r.denominator;
     }
 
-    
-    /*
-    public String toString() { // numerator/denominator cuts off decimals
-	double dble1 = numerator; //need to convert to double first
-	double dble2 = denominator;
-	return ( dble1/dble2 )+"";
-    }
-    
-    public double floatValue(){
-	double precise = Double.parseDouble( this.toString() ); //uses the most precise floating point
-	return precise;
-    }
-    
-    public void multiply(Rational r){
-	double dble1 = this.floatValue();
-	double dble2 = r.floatValue();
-	double nwdble = dble1 * dble2; //gets product
-	
-	//ex: 0.1 = 1/10
-	int decplaces = ( int ) Math.pow( 10, ( nwdble + "" ).length() - 2 );
-	int top = ( int ) ( nwdble * decplaces ); //moves the decimal point after the last digit ( becomes an integer )
-	numerator = top;
-	denominator = decplaces;
-    }
-    
-    public void divide(Rational r) { //same as multiply but now we divide
-	double dble1 = this.floatValue();
-	double dble2 = r.floatValue();
-	double nwdble = dble1 / dble2;
-	
-	int decplaces = ( int ) Math.pow( 10, ( nwdble + "" ).length() - 2 );
-	int top = ( int ) ( nwdble * decplaces );
-	numerator = top;
-	denominator = decplaces;
-    }
-    
-    public void add(Rational r) {
-	double dble1 = this.floatValue();
-	double dble2 = r.floatValue();
-	double nwdble = dble1 + dble2;
-	
-	int decplaces = ( int ) Math.pow( 10, ( nwdble + "" ).length() - 2 );
-	int top = ( int ) ( nwdble * decplaces );
-	numerator = top;
-	denominator = decplaces;
-    }
-
-    public void subtract(Rational r) {
-	double dble1 = this.floatValue();
-	double dble2 = r.floatValue();
-	double nwdble = dble1 - dble2;
-	
-	int decplaces = ( int ) Math.pow( 10, ( nwdble + "" ).length() - 2 );
-	int top = ( int ) ( nwdble * decplaces );
-	numerator = top;
-	denominator = decplaces;
-    }    
-    */
-
     public int gcd() {
-	int n = numerator;
-	int d = denominator;
-       	while ((d % n) != 0){
-	    d = (d % n);
-	    n = d;
+	int r; //remainder
+	int mx = Math.max( Math.abs(numerator), Math.abs(denominator) ); //max value
+	int mn = Math.min( Math.abs(numerator), Math.abs(denominator) ); //min value
+	//uses abs since the input is negatice, but negative numbers still have the same gcd as their positive counterparts
+		
+	while(mn!=0)
+	{
+	    r = mx % mn; //gets remainder ex: 30%12 = 6
+	    mx = mn;//max becomes min ex: 12
+	    mn = r; //min becomes remainder ex: 6
 	}
-	return denominator;
+		return mx; //returns gcd
     }
 
+    //~~~~~~STATIC VERSION OF GCD~~~~~~~~~
+    public static int gcd( int n, int d ){
+    int r; //remainder
+	int mx = Math.max( Math.abs(n), Math.abs(d) ); //max value
+	int mn = Math.min( Math.abs(n), Math.abs(d) ); //min value
+	//uses abs since the input is negatice, but negative numbers still have the same gcd as their positive counterparts
+		
+	while(mn!=0)
+	{
+	    r = mx % mn; //gets remainder ex: 30%12 = 6
+	    mx = mn;//max becomes min ex: 12
+	    mn = r; //min becomes remainder ex: 6
+	}
+		return mx; //returns gcd
+    }
+    //~~~~~~END GCD (STATIC)~~~~~~~~
 
     public void reduce() {
-	int gcd = gcd();
-	denominator /= gcd;
+	int gcd = gcd(); //get greatest common factor
+	denominator /= gcd; //simplifies fraction
 	numerator /= gcd;
+    }
 
+    public int compareTo( Rational r ) {
+    	double val = floatValue();
+    	double vlr = r.floatValue();
+    	if( val == vlr ) { //if the calling object is equal
+    		return 0;
+    	}
+
+    	else if( val > vlr ){//if calling object is bigger
+    		return 1;
+    	}
+
+    	return -1; //smaller
     }
     
     public static void main(String[] args){
@@ -140,16 +117,47 @@ public class Rational{
 	
 	r1.multiply(r2); //Multiplies r1 by r2, changes r1 to 1/10 (0.1)
 	System.out.println( r1 );
-	System.out.println( r1.denominator );
+	System.out.println( r1.denominator ); //10
+	System.out.println( r1.numerator ); //1
 	
+	System.out.println();
 	r2.divide(r1); //Divides r2 by r1, changes r2 to 5/1 (5.0)
 	System.out.println( r2 );
-	System.out.println( r2.denominator );
+	System.out.println( r2.denominator );//2
+	System.out.println(r2.numerator);//10
 
-	System.out.println(r2.numerator);
-	System.out.println(r2.gcd());
+	System.out.println();
+	System.out.println(r2.gcd()); //2
+
+	System.out.println();
 	r2.reduce();
-	System.out.println( r2.denominator );
-	System.out.println(r2.numerator);
+	System.out.println( r2.denominator ); //1
+	System.out.println(r2.numerator);//5
+
+	System.out.println();
+	System.out.println( r1.compareTo( r2 ) );//-1
+	System.out.println( r2.compareTo( r1 ) );//1
+
+	System.out.println();
+	System.out.println( gcd( 32, 12 ));//4
+
+	System.out.println();
+	r1.add( r2 );
+	System.out.println( r1 ); //5.1
+
+	System.out.println();
+	r2.subtract( r1 );
+	System.out.println( r2 ); //-0.1
+
+	System.out.println();
+	System.out.println( r1.compareTo( r2 ) );//1
+	System.out.println( r2.compareTo( r1 ) );//-1
+
+	Rational r3 = new Rational( 3, 4 );
+	Rational r4 = new Rational( 4, 5 );
+
+	System.out.println();
+	System.out.println( r3.compareTo( r4 ) );//-1
+	System.out.println( r4.compareTo( r3 ) );//1		
     }
 }
