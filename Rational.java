@@ -1,8 +1,8 @@
 /*
-Team DrDolla - Yikai Wang, Richard Wang
+Team DrDolla - Yikai Wang, Wilson Berkow
 APCS1 Pd9
-HW33 -- Do You Even Add, Bro?
-2015-11-18
+HW37 -- Rational Equality
+2015-11-24
  */
 
 public class Rational{
@@ -30,6 +30,20 @@ public class Rational{
 	String s1 = "Fraction : "+numerator +"/"+denominator;
 	String s2 = "Decimal : "+ (numerator * 1.0 / denominator);
 	return s1 +"\n"+ s2;
+    }
+
+    public boolean equals(Object obj) {
+	if (this == obj) {
+	    return true;
+	}
+	if (obj instanceof Rational) {
+	    Rational rightSide = (Rational)obj;
+	    this.reduce();
+	    rightSide.reduce();
+	    return numerator == rightSide.numerator &&
+		denominator == rightSide.denominator;
+	}
+	return false;
     }
 
     public double floatValue() { //returns "decimal" value
@@ -95,6 +109,10 @@ public class Rational{
 	int gcd = gcd(); //get greatest common factor
 	denominator /= gcd; //simplifies fraction
 	numerator /= gcd;
+	if (denominator < 0) {
+	    numerator *= -1;
+	    denominator *= -1;
+	}
     }
 
     public int compareTo( Rational r ) {
@@ -158,6 +176,25 @@ public class Rational{
 
 	System.out.println();
 	System.out.println( r3.compareTo( r4 ) );//-1
-	System.out.println( r4.compareTo( r3 ) );//1		
+	System.out.println( r4.compareTo( r3 ) );//1
+
+	System.out.println("-------------");
+	System.out.println("-- .equals --");
+	System.out.println(r3.equals(r4));//false
+	Rational re0 = new Rational(0, 10);
+	Rational re1 = new Rational(0, 3);
+	System.out.println(re0.equals(re1));//true
+	System.out.println(re1.equals(re0));//true
+	Rational re2 = new Rational(2, 4);
+	Rational re3 = new Rational(12, 24);
+	Rational re4 = new Rational(-12, -24);
+	System.out.println(re2.equals(re3));//true
+        System.out.println(re4.equals(re2));//true
+	Rational re5 = new Rational(3, 7);
+	Rational re6 = new Rational(3, -7);
+	Rational re7 = new Rational(-3, 7);
+	System.out.println(re5.equals(re6));//false
+	System.out.println(re7.equals(re5));//false
+	System.out.println(re6.equals(re7));//true
     }
 }
