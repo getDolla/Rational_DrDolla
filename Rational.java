@@ -33,14 +33,14 @@ public class Rational{
     }
 
     public boolean equals(Object obj) {
-	if (this == obj) {
+	if (this == obj) { //if same alias
 	    return true;
 	}
 	if (obj instanceof Rational) {
-	    Rational rightSide = (Rational)obj;
-	    this.reduce();
+	    Rational rightSide = (Rational)obj; //if it is a Rational
+	    this.reduce();//both reduce
 	    rightSide.reduce();
-	    return numerator == rightSide.numerator &&
+	    return numerator == rightSide.numerator && //returns if both numerator and denominator are the same
 		denominator == rightSide.denominator;
 	}
 	return false;
@@ -116,13 +116,15 @@ public class Rational{
     }
 
     public int compareTo( Rational r ) {
-    	double val = floatValue();
-    	double vlr = r.floatValue();
-    	if( val == vlr ) { //if the calling object is equal
-    		return 0;
-    	}
+	
+	if(this.equals(r)) { //if both are equal
+	    return 0;
+	}
 
-    	else if( val > vlr ){//if calling object is bigger
+	double val = floatValue();
+    	double vlr = r.floatValue();
+	
+    	if(vlr > val){//if calling object is bigger
     		return 1;
     	}
 
@@ -177,6 +179,15 @@ public class Rational{
 	System.out.println();
 	System.out.println( r3.compareTo( r4 ) );//-1
 	System.out.println( r4.compareTo( r3 ) );//1
+
+	Rational r5 = new Rational( 33333333, 100000000 );
+	Rational r6 = new Rational( 1, 3 );
+
+	System.out.println();
+	System.out.println( r5 );//0.33333333
+	System.out.println( r6 );// 1/3
+	System.out.println( r5.compareTo( r6 ) );//1
+	System.out.println( r6.compareTo( r5 ) );//-1
 
 	System.out.println("-------------");
 	System.out.println("-- .equals --");
